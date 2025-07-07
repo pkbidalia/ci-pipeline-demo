@@ -1,0 +1,51 @@
+name: Canary Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  canary-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'latest'
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v3
+        with:
+          version: 'latest'
+
+      - name: Deploy stable version
+        run: |
+          helm upgrade --install myapp stable-chart/ --namespace production \
+          --set image.tag=stable
+
+      - name: Deploy canary version
+        run: |
+          helm upgrade --install myapp-canary stable-chart/ --namespace production \
+          --set image.tag=canary
+
+      - name: Shift 10% traffic to canary
+        run: |
+          # Example: Update Istio VirtualService to route 10% traffic to canary
+          kubectl apply -f istio-virtualservice-canary.yaml
+
+      - name: Monitor canary health
+        run: |
+          # Implement health checks, e.g. wait or curl endpoints to validate
+
+      - name: Promote canary to stable if healthy
+        if: success()
+        run: |
+          helm upgrade --install myapp stable-chart/ --namespace production \
+          --set image.tag=canary
+          
+          # Reset traffic to 100% stable
+          kubectl apply -f istio-virtualservice-stable.yaml
