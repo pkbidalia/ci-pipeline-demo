@@ -18,12 +18,14 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+        working-directory: ./prep-plan
 
       - name: Run tests
         run: npm test
+        working-directory: ./prep-plan
 
       - name: Build Docker image
-        run: docker build -t my-app:latest .
+        run: docker build -t prep-plan:latest .
 
       - name: Echo deployment step
         run: echo "Deploy to staging..."
