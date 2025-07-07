@@ -1,7 +1,0 @@
-{
-  "name": "prep-plan",
-  "version": "1.0",
-  "bin": {
-    "prep-plan": "/"
-  }
-}
