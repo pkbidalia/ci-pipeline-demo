@@ -1,4 +1,4 @@
-name: CI Pipeline
+name: Node CI Pipeline
 
 on:
   push:
@@ -7,6 +7,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -18,14 +19,12 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-        working-directory: /home/runner/work/prep-plan
 
       - name: Run tests
         run: npm test
-        working-directory: /home/runner/work/prep-plan
 
       - name: Build Docker image
-        run: docker build -t prep-plan:latest .
+        run: docker build -t ci-cd-demo:latest .
 
-      - name: Echo deployment step
-        run: echo "Deploy to staging..."
+      - name: Simulate deployment
+        run: echo "Deployment to staging simulated"
