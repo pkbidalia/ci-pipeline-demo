@@ -18,11 +18,11 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-        #working-directory: ./prep-plan
+        working-directory: /home/runner/work
 
       - name: Run tests
         run: npm test
-        #working-directory: ./prep-plan
+        working-directory: /home/runner/work
 
       - name: Build Docker image
         run: docker build -t .
