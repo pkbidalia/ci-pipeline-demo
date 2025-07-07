@@ -25,7 +25,7 @@ jobs:
         working-directory: /home/runner/work/prep-plan
 
       - name: Build Docker image
-        run: docker build -t .
+        run: docker build -t prep-plan:latest .
 
       - name: Echo deployment step
         run: echo "Deploy to staging..."
